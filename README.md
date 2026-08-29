@@ -1,56 +1,169 @@
-# Welcome to your Expo app 👋
+# dgheoba
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
-
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+დღეობა — event photo sharing. Expo SDK 57, managed workflow, iOS/Android only (no web),
+expo-router, TypeScript strict.
 
 ```bash
-npm run reset-project
+npm install
+cp .env.example .env
+npm run ios      # or: npm run android
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+## Scripts
 
-### Other setup steps
+| Script              | What it does                               |
+| ------------------- | ------------------------------------------ |
+| `npm start`         | Dev server, cache reset                    |
+| `npm run ios`       | Dev server + iOS simulator                 |
+| `npm run android`   | Dev server + Android emulator              |
+| `npm run lint`      | ESLint (flat config, Expo + Prettier)      |
+| `npm run format`    | Prettier over the repo                     |
+| `npm run typecheck` | `tsc` — `expo lint` does **not** typecheck |
+| `npm run clean`     | Nuke `node_modules` and reinstall          |
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+`husky` + `lint-staged` run `eslint --fix` then `prettier --write` on staged files.
 
-## Learn more
+## Layout
 
-To learn more about developing your project with Expo, look at the following resources:
+```
+src/
+  navigation/   everything routing
+    app/        expo-router routes — one line each, mapping a URL to a screen
+    routes.ts   ROUTES registry
+    screenOptions.ts
+  screens/      one folder per screen: ScreenName.tsx + Name.styles.ts + container/useName.ts
+  components/   App*-prefixed primitives, one folder each, flat barrel
+  theme/        colour tokens + useTheme
+  i18n/         i18next bootstrap + locales
+  api/          axios client + query client
+  storage/      never-throw KV wrapper
+  hooks/        cross-cutting hooks
+  types/        module augmentations (i18next typed keys)
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+### Conventions
 
-## Join the community
+- **Container/presenter.** Every screen's logic lives in `container/use<Name>.ts` and returns
+  one flat object of state + handlers. The `.tsx` stays near-pure JSX.
+- **Styles.** `_styles = (theme) => StyleSheet.create({...})` in `Name.styles.ts`, consumed as
+  `const { styles, theme } = useTheme(_styles)`. `useTheme()` with no argument returns just
+  the theme, for dynamic values like icon colours. Styles never hardcode a hex — always
+  `theme.color.x`.
+- **No theme provider.** There is one static light theme (the designs have no dark variant and
+  no appearance switcher), so `useTheme` reads a module constant. It keeps the hook name so
+  call sites don't change if a second theme ever arrives.
+- **Barrels.** One named-export barrel per layer, with a trailing `// types` section. Import
+  across layers through the barrel (`@/components`), not deep paths.
+- **Text and i18n.** `AppText` owns text policy — theme font, ink colour, no font scaling —
+  and treats a string child as a translation key, so screens write
+  `<AppText>home.title</AppText>`. Already-resolved values (names, amounts) get translated at
+  the call site instead. Sizes and weights come from the caller's own style, not a variant
+  prop. `en.ts` is the source of truth — other locales are typed against it, so a missing key
+  is a compile error.
+- **Routes.** `ROUTES` in `src/navigation/routes.ts` is `satisfies Record<string, Href>`, so a
+  path that doesn't exist in `src/app/` fails to compile. Nothing passes a literal to
+  `router.push`.
+- **Language.** Defaults to Georgian. The device locale is deliberately **not** consulted —
+  only a previously saved choice overrides the default.
 
-Join our community of developers creating universal apps.
+## Assets
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Everything static lives in `assets/` at the project root (not `src/`), reachable as
+`@/assets/*`:
+
+```
+assets/
+  icons/        .svg — imported as React components
+  images/       .png/.jpg — app icon, splash, adaptive icons
+  fonts/        .ttf/.otf (not created yet)
+```
+
+SVGs are imported as components, not as image sources:
+
+```tsx
+import QRScanner from "@/assets/icons/QRScanner.svg";
+
+<QRScanner width={64} height={64} color={theme.color.textPrimary} />;
+```
+
+That needs two pieces working together, so if an SVG import ever breaks, check both:
+`metro.config.js` moves `.svg` from `assetExts` to `sourceExts` and runs it through
+`react-native-svg-transformer`, and `src/types/svg.d.ts` declares the module for TypeScript.
+Metro caches transformer config aggressively — restart with `npm start` (which already passes
+`--reset-cache`) after touching `metro.config.js`.
+
+Raster images keep the normal `require()` form, and `@2x`/`@3x` variants are picked up
+automatically.
+
+## Colour tokens
+
+`src/theme/colors.ts` holds a `palette` of ramp steps, spread into purpose tokens on top.
+Values come from the Figma file: `ink`, `muted`, `subtle`, `ink-inverse` and `dark/canvas` are
+bound variables; the cream canvas, warm hairline and crimson were sampled from the rendered
+frames because they are raw fills.
+
+Only steps that actually appear in the design exist — there is no filler between them. Add a
+step when a screen needs it.
+
+No breakpoints: every frame in the Figma `UI DESIGN` page is 393×852, so there is nothing to
+branch on yet.
+
+## Things that will bite you
+
+- **No `babel.config.js`.** `babel-preset-expo` injects `react-native-worklets/plugin` and the
+  React Compiler plugin itself. Adding one, or adding `react-native-reanimated/plugin`
+  (renamed in Reanimated 4), breaks the build.
+- **No `SafeAreaProvider`.** expo-router mounts one; a second gives wrong insets. Use the
+  `Screen` component or `useSafeAreaInsets`.
+- **`GestureHandlerRootView` is mounted by hand** in `AppProviders` — expo-router does not add
+  it, and gestures silently no-op without it.
+- **`import "intl-pluralrules"` must stay the first line of `src/i18n/i18n.ts`.** Hermes has no
+  `Intl.PluralRules` and i18next 26 has no fallback.
+- **Tabs come from `expo-router/js-tabs`.** The `Tabs` re-export on `expo-router` is deprecated
+  in SDK 57. `@react-navigation/*` is not a dependency — expo-router vendors it, so navigator
+  option types come from `expo-router` / `expo-router/js-tabs`.
+- **`process.env.EXPO_PUBLIC_*` is inlined by literal text substitution.** Destructuring or
+  bracket access yields `undefined`. Every value is readable in the shipped bundle — no
+  secrets.
+- **Route types are generated**, into gitignored `.expo/types`. On a fresh clone or in CI, run
+  the dev server once before `npm run typecheck`, or `ROUTES` won't resolve.
+- **The routes directory is not auto-detected.** expo-router looks for `./app` or `./src/app`;
+  ours lives at `src/navigation/app`, set via the `root` prop on the `expo-router` plugin in
+  `app.json` (it lands in `extra.router.root`). If you move it again, update that prop, delete
+  `.expo/types`, and restart the dev server — Fast Refresh will not pick it up.
+
+## Known gaps
+
+- **FiraGo is not loaded.** `theme.fontFamily` is `"FiraGo-Regular"`, but there are no font
+  files and no `useFonts()` call — iOS silently falls back to the system face. Drop the
+  `.ttf`s into `assets/fonts/`, then load them in `src/app/_layout.tsx` and gate on
+  `loaded || error` (on `error` too, or a failed font blanks the app forever).
+- **Icons and splash are still Expo placeholders**, and the splash background in `app.json` is
+  Expo blue (`#208AEF`) rather than the cream canvas.
+- **Georgian type has no weight axis** — pick a family (`FiraGo-Bold`) rather than setting
+  `fontWeight`. That is why the theme carries no weight scale.
+
+## Not included
+
+Deliberately left out until there's a reason — the backend doesn't exist yet:
+
+- **Zustand.** Add it when there's cross-cutting UI state that isn't server state.
+- **Auth / token refresh.** `api/apiClient.ts` has no auth interceptor. When there's a login,
+  add secure token storage (`expo-secure-store`) and gate routes with `<Stack.Protected>`.
+- **Endpoints, services and query hooks.** The pattern: `ENDPOINTS` registry → `<domain>Service`
+  method → `use<Domain>Queries` / `use<Domain>Mutations` hook → barrel export.
+- **Forms.** `AppInput` is standalone. Wiring `react-hook-form` means adding `name`/`rules`
+  props and a `Controller` inside it.
+- **Toasts, modals, selects.** No `AppToast` / `AppModal` / `AppSelect` yet.
+- **Tests.** No test setup.
+
+## Screens
+
+`/` is the QR entry screen (design 01), outside the tabs. `ალბომში შესვლა` navigates to
+`/home`. The `home` and `settings` tabs are still placeholders — `settings` exists to prove
+the i18n layer is wired and can go once real screens land.
+
+Entry screen gaps: `handleScanPress` in `container/useQrEntry.ts` is a no-op — camera scanning
+needs `expo-camera` plus a permission prompt, neither installed. `handleSubmit` navigates
+without validating the code against a backend. The wordmark is styled text, not the real logo
+asset.
