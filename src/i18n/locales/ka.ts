@@ -20,6 +20,14 @@ export const ka: typeof en = {
     namePlaceholder: "სახელი და გვარი",
     submit: "ალბომში შესვლა",
   },
+  scan: {
+    title: "დაასკანერე QR კოდი",
+    pickFromGallery: "ფოტოს ატვირთვა",
+    permissionBody: "QR კოდის დასასკანერებლად გვჭირდება კამერაზე წვდომა.",
+    grantPermission: "კამერაზე წვდომის ნება",
+    openSettings: "პარამეტრების გახსნა",
+    noQrFound: "ამ სურათზე QR კოდი ვერ ვიპოვეთ. სცადე ახლიდან.",
+  },
   settings: {
     language: "ენა",
   },

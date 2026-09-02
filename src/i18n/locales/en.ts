@@ -18,6 +18,14 @@ export const en = {
     namePlaceholder: "Name and surname",
     submit: "Enter the album",
   },
+  scan: {
+    title: "Scan the QR code",
+    pickFromGallery: "Upload a photo",
+    permissionBody: "We need camera access to scan the QR code on your table.",
+    grantPermission: "Allow camera",
+    openSettings: "Open settings",
+    noQrFound: "No QR code found in that image. Try again.",
+  },
   settings: {
     language: "Language",
   },

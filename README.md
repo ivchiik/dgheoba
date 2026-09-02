@@ -163,7 +163,27 @@ Deliberately left out until there's a reason — the backend doesn't exist yet:
 `/home`. The `home` and `settings` tabs are still placeholders — `settings` exists to prove
 the i18n layer is wired and can go once real screens land.
 
-Entry screen gaps: `handleScanPress` in `container/useQrEntry.ts` is a no-op — camera scanning
-needs `expo-camera` plus a permission prompt, neither installed. `handleSubmit` navigates
-without validating the code against a backend. The wordmark is styled text, not the real logo
-asset.
+`/scan` is the QR scanner, pushed on top of the entry screen so the typed name survives.
+It hands the scanned code back through a one-slot module in
+`screens/qrEntry/container/scannedCode.ts` — expo-router cannot pass params on `router.back()`,
+and replacing the entry route would discard the name.
+
+**The camera only works on a physical device.** expo-camera is documented as
+"Android (device only), iOS (device only)", so on a simulator you get the permission screen or
+a black frame. Test scanning through Expo Go on a real phone.
+
+Other notes on the scanner:
+
+- `onBarcodeScanned` fires on every frame the code is visible, so the container holds a `ref`
+  lock and ignores everything after the first hit.
+- Torch is `enableTorch` (a boolean). `flash` is for still capture and will not light a scan.
+- `scanFromURLAsync` is a top-level export of `expo-camera`, not a static on `CameraView`. It
+  returns an empty array rather than throwing when nothing is found, and on Android the QR
+  must fill most of the image.
+- The gallery picker needs **no** permission request in SDK 57 — the system picker runs
+  out-of-process.
+- Permission strings in `app.json` are inert in Expo Go; it shows Expo Go's own copy. They
+  only take effect in a dev/production build.
+
+Entry screen gaps: `handleSubmit` navigates without validating the code against a backend.
+The wordmark is styled text, not the real logo asset.
