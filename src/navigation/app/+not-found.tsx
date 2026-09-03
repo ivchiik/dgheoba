@@ -15,7 +15,7 @@ export default function NotFoundScreen() {
           <AppButton
             variant="outline"
             title="notFound.goHome"
-            onPress={() => router.replace(ROUTES.HOME)}
+            onPress={() => router.replace(ROUTES.ENTRY)}
           />
         </View>
       </Screen>

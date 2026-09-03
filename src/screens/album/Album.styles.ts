@@ -11,7 +11,7 @@ export const _styles = (_theme: Theme) =>
     },
 
     title: {
-      fontSize: 28,
-      lineHeight: 34,
+      fontSize: 20,
+      lineHeight: 26,
     },
   });

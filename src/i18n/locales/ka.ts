@@ -5,11 +5,18 @@ export const ka: typeof en = {
     notFound: "ასეთი გვერდი არ არსებობს.",
   },
   tabs: {
-    home: "მთავარი",
-    settings: "პარამეტრები",
+    upload: "ატვირთვა",
+    album: "ალბომი",
   },
-  home: {
-    title: "მთავარი",
+  upload: {
+    eventLabel: "ღონისძიება",
+    addMedia: "დაამატე ფოტო ან ვიდეო",
+    addMediaHint: "კამერა ან გალერეა",
+    uploadedCount: "ატვირთული ფოტო",
+    viewAlbum: "ალბომში ნახვა",
+  },
+  album: {
+    title: "ალბომი",
   },
   entry: {
     scanWithCamera: "კამერით დასკანერება",
@@ -32,6 +39,6 @@ export const ka: typeof en = {
     language: "ენა",
   },
   notFound: {
-    goHome: "მთავარ გვერდზე დაბრუნება",
+    goHome: "დასაწყისში დაბრუნება",
   },
 };

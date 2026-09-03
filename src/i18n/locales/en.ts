@@ -3,11 +3,18 @@ export const en = {
     notFound: "This screen doesn't exist.",
   },
   tabs: {
-    home: "Home",
-    settings: "Settings",
+    upload: "Upload",
+    album: "Album",
   },
-  home: {
-    title: "Home",
+  upload: {
+    eventLabel: "EVENT",
+    addMedia: "Add a photo or video",
+    addMediaHint: "Camera or gallery",
+    uploadedCount: "photos uploaded",
+    viewAlbum: "View in album",
+  },
+  album: {
+    title: "Album",
   },
   entry: {
     scanWithCamera: "Scan with camera",
@@ -30,6 +37,6 @@ export const en = {
     language: "Language",
   },
   notFound: {
-    goHome: "Go to home screen",
+    goHome: "Back to start",
   },
 };

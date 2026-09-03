@@ -134,6 +134,12 @@ branch on yet.
 
 ## Known gaps
 
+- **Nothing is actually uploaded.** The dropzone on `/upload` opens the system gallery and
+  collects the chosen assets, but there is no API to send them to, so they only live in that
+  screen's state for the session and drive the counter. `container/useUpload.ts` marks where
+  the upload call goes. The count resets on reload, and the design's counter label says
+  "photos" while videos can also be picked.
+
 - **FiraGo is not loaded.** `theme.fontFamily` is `"FiraGo-Regular"`, but there are no font
   files and no `useFonts()` call — iOS silently falls back to the system face. Drop the
   `.ttf`s into `assets/fonts/`, then load them in `src/app/_layout.tsx` and gate on

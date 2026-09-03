@@ -2,6 +2,7 @@ import { useCallback, useState } from "react";
 import { router, useFocusEffect } from "expo-router";
 
 import { ROUTES } from "@/navigation";
+import { storage, STORAGE_KEYS } from "@/storage";
 
 import { takeScannedCode } from "./scannedCode";
 
@@ -23,8 +24,10 @@ export const useQrEntry = () => {
   const handleSubmit = () => {
     if (!canSubmit) return;
 
-    // TODO: validate the code against the backend before entering.
-    router.replace(ROUTES.HOME);
+    storage.setValue(STORAGE_KEYS.guestName, name.trim());
+    storage.setValue(STORAGE_KEYS.albumCode, code.trim());
+
+    router.replace(ROUTES.UPLOAD);
   };
 
   return {
