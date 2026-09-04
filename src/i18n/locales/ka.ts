@@ -17,6 +17,9 @@ export const ka: typeof en = {
   },
   album: {
     title: "ალბომი",
+    total: "სულ {{value}}",
+    mine: "ჩემი {{value}}",
+    empty: "ჯერ არაფერია ატვირთული.",
   },
   entry: {
     scanWithCamera: "კამერით დასკანერება",
@@ -34,6 +37,13 @@ export const ka: typeof en = {
     grantPermission: "კამერაზე წვდომის ნება",
     openSettings: "პარამეტრების გახსნა",
     noQrFound: "ამ სურათზე QR კოდი ვერ ვიპოვეთ. სცადე ახლიდან.",
+  },
+  media: {
+    download: "ჩამოტვირთვა",
+    delete: "წაშლა",
+    uploadedBy: "ატვირთა {{name}}",
+    videoPlaceholder: "ვიდეო",
+    missing: "ეს ფაილი ალბომში აღარ არის.",
   },
   settings: {
     language: "ენა",

@@ -4,12 +4,13 @@ import * as ImagePicker from "expo-image-picker";
 
 import { ROUTES } from "@/navigation";
 import { storage, STORAGE_KEYS } from "@/storage";
+import { addPickedMedia, useMedia } from "@/store";
 import { formatShortName } from "@/utils";
 
 export const useUpload = () => {
   const guestName = formatShortName(storage.getStringValue(STORAGE_KEYS.guestName) ?? "");
 
-  const [pickedMedia, setPickedMedia] = useState<ImagePicker.ImagePickerAsset[]>([]);
+  const media = useMedia();
   const [isPicking, setIsPicking] = useState(false);
 
   const handleAddMedia = async () => {
@@ -26,8 +27,8 @@ export const useUpload = () => {
 
       if (result.canceled) return;
 
-      // TODO: upload result.assets to the backend; until then they are only counted.
-      setPickedMedia((current) => [...current, ...result.assets]);
+      // TODO: upload result.assets to the backend; until then they are only held in memory.
+      addPickedMedia(result.assets, storage.getStringValue(STORAGE_KEYS.guestName) ?? "");
     } catch (cause) {
       console.warn("[upload] picking media failed", cause);
     } finally {
@@ -39,7 +40,7 @@ export const useUpload = () => {
 
   return {
     guestName,
-    uploadedCount: pickedMedia.length,
+    uploadedCount: media.length,
     isPicking,
     handleAddMedia,
     handleViewAlbum,

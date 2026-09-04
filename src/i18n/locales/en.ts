@@ -15,6 +15,9 @@ export const en = {
   },
   album: {
     title: "Album",
+    total: "Total {{value}}",
+    mine: "Mine {{value}}",
+    empty: "Nothing uploaded yet.",
   },
   entry: {
     scanWithCamera: "Scan with camera",
@@ -32,6 +35,13 @@ export const en = {
     grantPermission: "Allow camera",
     openSettings: "Open settings",
     noQrFound: "No QR code found in that image. Try again.",
+  },
+  media: {
+    download: "Download",
+    delete: "Delete",
+    uploadedBy: "Uploaded by {{name}}",
+    videoPlaceholder: "Video",
+    missing: "This item is no longer in the album.",
   },
   settings: {
     language: "Language",
