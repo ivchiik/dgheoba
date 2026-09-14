@@ -42,3 +42,8 @@ example
 # generated native folders
 /ios
 /android
+
+# store credentials — never commit these
+google-service-account*.json
+*.p8
+credentials.json

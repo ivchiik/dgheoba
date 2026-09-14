@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { router, useLocalSearchParams } from "expo-router";
 
 import { removeMedia, useMedia } from "@/store";
-import { formatFileSize, formatTime } from "@/utils";
+import { formatDuration, formatFileSize, formatTime } from "@/utils";
 
 export const useMediaDetail = () => {
   const { t } = useTranslation();
@@ -26,14 +26,15 @@ export const useMediaDetail = () => {
     router.back();
   };
 
-  const size = formatFileSize(item?.fileSize);
   const time = item ? formatTime(item.uploadedAt) : "";
+  const duration = formatDuration(item?.durationMs);
+  const size = formatFileSize(item?.fileSize);
 
   return {
     item,
     positionLabel: item ? `${index + 1} / ${media.length}` : "",
     uploaderLabel: item ? t("media.uploadedBy", { name: item.uploadedBy }) : "",
-    detailsLabel: [time, size].filter(Boolean).join(" · "),
+    detailsLabel: [time, duration, size].filter(Boolean).join(" · "),
     handleClose,
     handleDownload,
     handleDelete,

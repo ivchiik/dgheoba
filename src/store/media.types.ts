@@ -8,4 +8,6 @@ export interface AlbumMedia {
   isMine: boolean;
   uploadedAt: number;
   fileSize?: number;
+  durationMs?: number;
+  thumbnailUri?: string;
 }

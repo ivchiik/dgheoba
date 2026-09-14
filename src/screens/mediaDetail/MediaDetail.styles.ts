@@ -43,15 +43,14 @@ export const _styles = (theme: Theme) =>
       justifyContent: "center",
     },
 
+    stageVideo: {
+      flex: 1,
+      width: "100%",
+    },
+
     stageImage: {
       width: "100%",
       height: "100%",
-    },
-
-    stagePlaceholder: {
-      fontSize: 14,
-      lineHeight: 18,
-      color: theme.color.textSecondary,
     },
 
     footer: {

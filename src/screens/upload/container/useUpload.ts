@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { router } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 
@@ -12,9 +12,11 @@ export const useUpload = () => {
 
   const media = useMedia();
   const [isPicking, setIsPicking] = useState(false);
+  const isPickingRef = useRef(false);
 
   const handleAddMedia = async () => {
-    if (isPicking) return;
+    if (isPickingRef.current) return;
+    isPickingRef.current = true;
     setIsPicking(true);
 
     try {
@@ -32,6 +34,7 @@ export const useUpload = () => {
     } catch (cause) {
       console.warn("[upload] picking media failed", cause);
     } finally {
+      isPickingRef.current = false;
       setIsPicking(false);
     }
   };

@@ -5,6 +5,7 @@ import { AppButton, AppText, Screen } from "@/components";
 import { useTheme } from "@/theme";
 
 import { _styles } from "./MediaDetail.styles";
+import { VideoStage } from "./VideoStage";
 import { useMediaDetail } from "./container/useMediaDetail";
 
 const ICON_SIZE = 22;
@@ -53,7 +54,7 @@ export const MediaDetailScreen = () => {
 
       <View style={styles.stage}>
         {item.kind === "video" ? (
-          <AppText style={styles.stagePlaceholder}>media.videoPlaceholder</AppText>
+          <VideoStage uri={item.uri} />
         ) : (
           <Image source={{ uri: item.uri }} style={styles.stageImage} resizeMode="contain" />
         )}

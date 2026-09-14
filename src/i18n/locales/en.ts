@@ -40,7 +40,6 @@ export const en = {
     download: "Download",
     delete: "Delete",
     uploadedBy: "Uploaded by {{name}}",
-    videoPlaceholder: "Video",
     missing: "This item is no longer in the album.",
   },
   settings: {

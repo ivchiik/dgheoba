@@ -42,7 +42,6 @@ export const ka: typeof en = {
     download: "ჩამოტვირთვა",
     delete: "წაშლა",
     uploadedBy: "ატვირთა {{name}}",
-    videoPlaceholder: "ვიდეო",
     missing: "ეს ფაილი ალბომში აღარ არის.",
   },
   settings: {

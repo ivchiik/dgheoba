@@ -81,6 +81,18 @@ export const _styles = (theme: Theme) =>
       height: "100%",
     },
 
+    videoBadge: {
+      position: "absolute",
+      bottom: 6,
+      left: 6,
+      width: 22,
+      height: 22,
+      borderRadius: 11,
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: theme.color.gray1000,
+    },
+
     empty: {
       textAlign: "center",
       paddingTop: 48,

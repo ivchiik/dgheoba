@@ -135,10 +135,21 @@ branch on yet.
 ## Known gaps
 
 - **Nothing is actually uploaded.** The dropzone on `/upload` opens the system gallery and
-  collects the chosen assets, but there is no API to send them to, so they only live in that
-  screen's state for the session and drive the counter. `container/useUpload.ts` marks where
-  the upload call goes. The count resets on reload, and the design's counter label says
-  "photos" while videos can also be picked.
+  collects the chosen assets, but there is no API to send them to, so they only live in
+  `src/store/mediaStore.ts` for the session. `container/useUpload.ts` marks where the upload
+  call goes. The list resets on reload, and the design's counter label says "photos" while
+  videos can also be picked.
+
+- **No video thumbnails in the album grid.** Videos show a play glyph instead of a still
+  frame. Both routes to a real thumbnail have a cost: `expo-video-thumbnails` gives a plain
+  cacheable file URI but is deprecated, while `player.generateThumbnailsAsync` is the
+  supported path yet returns a native ref that only `expo-image` can render, needs a
+  throwaway player per video, and cannot be cached across launches.
+
+- **Download on `/media/[id]` is a stub.** Saving to the photo library needs
+  `expo-media-library`, and every item currently in the store already came from this device.
+
+- **Delete has no confirmation.** It removes and navigates back immediately.
 
 - **FiraGo is not loaded.** `theme.fontFamily` is `"FiraGo-Regular"`, but there are no font
   files and no `useFonts()` call — iOS silently falls back to the system face. Drop the
