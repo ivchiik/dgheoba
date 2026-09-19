@@ -7,14 +7,6 @@ import "@/i18n/i18n";
 import { queryClient } from "@/api";
 import { useQueryFocusManager } from "@/hooks/useQueryFocusManager";
 
-/**
- * Everything the whole tree needs.
- *
- * GestureHandlerRootView is outermost and must be mounted by hand — expo-router does not
- * add it, and without it gestures silently do nothing. SafeAreaProvider is deliberately
- * absent: expo-router already mounts one. There is no theme provider — the theme is a single
- * static object read directly by `useTheme`.
- */
 export const AppProviders = ({ children }: PropsWithChildren) => {
   useQueryFocusManager();
 
