@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "dgheoba",
+    "name": "DGEOBA",
     "slug": "dgheoba",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -12,7 +12,6 @@
     },
     "ios": {
       "bundleIdentifier": "com.dgheoba.app",
-      "icon": "./assets/expo.icon",
       "config": {
         "usesNonExemptEncryption": false
       }
@@ -20,9 +19,8 @@
     "android": {
       "package": "com.dgheoba.app",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#B40000",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
-        "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
@@ -38,9 +36,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
+          "backgroundColor": "#F3ECDF",
           "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "imageWidth": 150
         }
       ],
       "expo-sqlite",

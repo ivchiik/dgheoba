@@ -12,7 +12,7 @@ import type { ScanEntryCardProps } from "./ScanEntryCard.types";
 
 const ICON_SIZE = 22;
 
-export const ScanEntryCard = ({ code, onChangeCode, onScanPress }: ScanEntryCardProps) => {
+export const ScanEntryCard = ({ code, error, onChangeCode, onScanPress }: ScanEntryCardProps) => {
   const { styles, theme } = useTheme(_styles);
 
   return (
@@ -31,6 +31,7 @@ export const ScanEntryCard = ({ code, onChangeCode, onScanPress }: ScanEntryCard
 
       <AppInput
         value={code}
+        error={error}
         onChangeText={onChangeCode}
         placeholder="entry.codePlaceholder"
         autoCapitalize="characters"

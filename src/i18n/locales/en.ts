@@ -27,6 +27,13 @@ export const en = {
     yourName: "Your name",
     namePlaceholder: "Name and surname",
     submit: "Enter the album",
+    errors: {
+      codeNotRecognised: "We don't know this code. Check it and try again.",
+      revoked: "The organiser has closed access to this album.",
+      windowClosed: "This album is no longer accepting guests.",
+      rateLimited: "Too many attempts. Wait a moment and try again.",
+      generic: "Something went wrong. Try again.",
+    },
   },
   scan: {
     title: "Scan the QR code",
@@ -35,6 +42,7 @@ export const en = {
     grantPermission: "Allow camera",
     openSettings: "Open settings",
     noQrFound: "No QR code found in that image. Try again.",
+    notAJoinCode: "That QR code isn't for an album.",
   },
   media: {
     download: "Download",

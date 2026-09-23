@@ -155,20 +155,20 @@ branch on yet.
   files and no `useFonts()` call — iOS silently falls back to the system face. Drop the
   `.ttf`s into `assets/fonts/`, then load them in `src/app/_layout.tsx` and gate on
   `loaded || error` (on `error` too, or a failed font blanks the app forever).
-- **Icons and splash are still Expo placeholders**, and the splash background in `app.json` is
-  Expo blue (`#208AEF`) rather than the cream canvas.
 - **Georgian type has no weight axis** — pick a family (`FiraGo-Bold`) rather than setting
   `fontWeight`. That is why the theme carries no weight scale.
 
 ## Not included
 
-Deliberately left out until there's a reason — the backend doesn't exist yet:
+Deliberately left out until there's a reason:
 
 - **Zustand.** Add it when there's cross-cutting UI state that isn't server state.
-- **Auth / token refresh.** `api/apiClient.ts` has no auth interceptor. When there's a login,
-  add secure token storage (`expo-secure-store`) and gate routes with `<Stack.Protected>`.
-- **Endpoints, services and query hooks.** The pattern: `ENDPOINTS` registry → `<domain>Service`
-  method → `use<Domain>Queries` / `use<Domain>Mutations` hook → barrel export.
+- **Auth interceptor / token refresh.** The guest token from redeem is stored but not yet sent;
+  the `Authorization` interceptor lands with the first authenticated query. The token lives in
+  kv-store, not `expo-secure-store`: it is event-scoped, expires within 12 h, and anyone holding
+  the code (stored beside it) can mint another, so secure storage would protect nothing.
+- **Query hooks.** `ENDPOINTS` registry → `<domain>Service` method → `use<Domain>Mutations` hook
+  → barrel export is in use for redeem; queries follow the same chain via `use<Domain>Queries`.
 - **Forms.** `AppInput` is standalone. Wiring `react-hook-form` means adding `name`/`rules`
   props and a `Controller` inside it.
 - **Toasts, modals, selects.** No `AppToast` / `AppModal` / `AppSelect` yet.
@@ -202,5 +202,6 @@ Other notes on the scanner:
 - Permission strings in `app.json` are inert in Expo Go; it shows Expo Go's own copy. They
   only take effect in a dev/production build.
 
-Entry screen gaps: `handleSubmit` navigates without validating the code against a backend.
-The wordmark is styled text, not the real logo asset.
+Entry screen gaps: the redeem field names are guesses (`TODO(swagger)`), and the format check in
+`utils/parseAccessCode.ts` is deliberately loose until the backend confirms the code's alphabet
+and length. The wordmark is styled text, not the real logo asset.

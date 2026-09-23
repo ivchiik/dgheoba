@@ -5,6 +5,7 @@ import * as ImagePicker from "expo-image-picker";
 import { openSettings } from "expo-linking";
 
 import { setScannedCode } from "@/screens/qrEntry/container/scannedCode";
+import { parseAccessCode } from "@/utils";
 
 export const useQrScanner = () => {
   const [permission, requestPermission] = useCameraPermissions();
@@ -14,8 +15,14 @@ export const useQrScanner = () => {
 
   const hasScanned = useRef(false);
 
-  const acceptCode = useCallback((code: string) => {
+  const acceptCode = useCallback((raw: string) => {
     if (hasScanned.current) return;
+
+    const code = parseAccessCode(raw);
+    if (!code) {
+      setError("scan.notAJoinCode");
+      return;
+    }
 
     hasScanned.current = true;
     setScannedCode(code);

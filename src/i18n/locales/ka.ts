@@ -29,6 +29,13 @@ export const ka: typeof en = {
     yourName: "შენი სახელი",
     namePlaceholder: "სახელი და გვარი",
     submit: "ალბომში შესვლა",
+    errors: {
+      codeNotRecognised: "ეს კოდი ვერ ვიცანით. შეამოწმე და სცადე ახლიდან.",
+      revoked: "ორგანიზატორმა ამ ალბომზე წვდომა დახურა.",
+      windowClosed: "ეს ალბომი სტუმრებს აღარ იღებს.",
+      rateLimited: "ძალიან ბევრი მცდელობაა. ცოტა მოიცადე და სცადე ახლიდან.",
+      generic: "რაღაც შეცდომა მოხდა. სცადე ახლიდან.",
+    },
   },
   scan: {
     title: "დაასკანერე QR კოდი",
@@ -37,6 +44,7 @@ export const ka: typeof en = {
     grantPermission: "კამერაზე წვდომის ნება",
     openSettings: "პარამეტრების გახსნა",
     noQrFound: "ამ სურათზე QR კოდი ვერ ვიპოვეთ. სცადე ახლიდან.",
+    notAJoinCode: "ეს QR კოდი ალბომს არ ეკუთვნის.",
   },
   media: {
     download: "ჩამოტვირთვა",

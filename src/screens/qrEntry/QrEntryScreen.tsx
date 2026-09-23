@@ -13,7 +13,9 @@ export const QrEntryScreen = () => {
   const {
     name,
     code,
+    codeError,
     canSubmit,
+    isSubmitting,
     handleChangeName,
     handleChangeCode,
     handleScanPress,
@@ -27,7 +29,12 @@ export const QrEntryScreen = () => {
       </View>
 
       <View style={styles.body}>
-        <ScanEntryCard code={code} onChangeCode={handleChangeCode} onScanPress={handleScanPress} />
+        <ScanEntryCard
+          code={code}
+          error={codeError}
+          onChangeCode={handleChangeCode}
+          onScanPress={handleScanPress}
+        />
         <AppText style={styles.hint}>entry.hint</AppText>
       </View>
 
@@ -39,7 +46,12 @@ export const QrEntryScreen = () => {
           onChangeText={handleChangeName}
           autoCapitalize="words"
         />
-        <AppButton title="entry.submit" onPress={handleSubmit} disabled={!canSubmit} />
+        <AppButton
+          title="entry.submit"
+          onPress={handleSubmit}
+          disabled={!canSubmit}
+          isLoading={isSubmitting}
+        />
       </View>
     </Screen>
   );

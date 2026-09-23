@@ -110,8 +110,10 @@ session's media list; `storage` (`expo-sqlite/kv-store`) for durable primitives,
 (`expo-sqlite/kv-store` instead, sync API, every call wrapped so it can never throw).
 
 **Keep the scaffold minimal.** Build what's needed now; document the pattern instead of
-pre-building it. That is why there is no auth interceptor, no `ENDPOINTS`/service layer, no
-react-hook-form, no toast/modal/select primitives. Add each when a real screen needs it.
+pre-building it. That is why there is no auth interceptor yet (nothing authenticated is called),
+no react-hook-form, no toast/modal/select primitives. Add each when a real screen needs it.
+`src/api` has the `ENDPOINTS` → `<domain>Service` → `use<Domain>Mutations` chain for one call so
+far: redeem.
 
 ## Things that will bite you
 
@@ -157,7 +159,14 @@ Flow: `/` (QR entry, outside the tabs) → `/scan` → back to `/` → `/upload`
 (`screens/qrEntry/container/scannedCode.ts`) — expo-router cannot pass params on `router.back()`,
 and replacing the entry route would discard the typed name.
 
-Stubbed, with a `TODO` at the seam: **uploading** (assets only reach `mediaStore`, never a server),
-**download** on the detail screen (needs `expo-media-library`), and **code validation** on entry.
+Entry redeems the code at `POST /api/v1/access/redeem` and stores the guest token under
+`STORAGE_KEYS.guestToken`; nothing sends it yet. The request/response field names are guesses
+marked `TODO(swagger)`, and without a reachable `EXPO_PUBLIC_API_URL` (the repo has no `.env`)
+nobody gets past `/`. This is the first slice of the backend integration; the auth header,
+gallery, upload, download and join link are not started.
+
+Stubbed, with a `TODO` at the seam: **uploading** (assets only reach `mediaStore`, never a server)
+and **download** on the detail screen (needs `expo-media-library`).
 Delete has no confirmation. FiraGo is referenced by `theme.fontFamily` but no font files are loaded,
-so iOS falls back to the system face. Icons and splash are still Expo placeholders.
+so iOS falls back to the system face. Icon and splash are the DGEOBA mark on `#B40000` /
+`#F3ECDF` (`red500` / `cream100`); they are native resources, so a change ships only with a build.

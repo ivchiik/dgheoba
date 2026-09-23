@@ -7,6 +7,10 @@ const REQUEST_TIMEOUT_MS = 20_000;
 
 export const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? "";
 
+if (__DEV__ && !API_BASE_URL) {
+  console.warn("[api] EXPO_PUBLIC_API_URL is empty; copy .env.example to .env");
+}
+
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   timeout: REQUEST_TIMEOUT_MS,
